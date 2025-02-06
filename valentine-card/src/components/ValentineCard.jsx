@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactConfetti from "react-confetti";
-import { HeartIcon } from "@heroicons/react/24/solid";
-import useWindowSize from "react-use/lib/useWindowSize";
+import { HeartIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import { useWindowSize } from "react-use";
 import { Howl } from "howler";
 
 const sound = new Howl({
@@ -16,6 +16,16 @@ export default function ValentineCard() {
   const [recipient, setRecipient] = useState("");
   const [showConfetti, setShowConfetti] = useState(false);
   const { width, height } = useWindowSize();
+
+  // Отключаем скролл
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
+    };
+  }, []);
 
   const handleOpen = () => {
     if (!recipient) return;
@@ -32,10 +42,20 @@ export default function ValentineCard() {
   }, [showConfetti]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-200 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-200 flex items-center justify-center p-4 relative">
       {showConfetti && (
         <ReactConfetti width={width} height={height} recycle={false} />
       )}
+
+      {/* Иконка Telegram */}
+      <a
+        href="https://t.me/A114you" // Замените на свою ссылку
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-4 right-4 p-3 bg-white rounded-full shadow-lg hover:bg-pink-50 transition-colors"
+      >
+        <PaperAirplaneIcon className="w-6 h-6 text-pink-500" />
+      </a>
 
       <AnimatePresence>
         {!isOpen ? (
